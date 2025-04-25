@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Meal Customisation | FoodGenie</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .form-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .form-row label {
+      width: 140px;
+      font-size: 15px;
+      color: #5C4B51;
+      margin-right: 10px;
+    }
+    .form-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #FFADAD;
+    }
+    .input-group {
+      margin-bottom: 10px;
+    }
+    #result {
+      margin-top: 12px;
+      font-size: 15px;
+      color: #FF8097;
+      min-height: 22px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Meal Customisation</h1>
+    <form id="meal-customisation-form">
+      <div class="input-group">
+        <label for="dietType">Diet Type</label>
+        <select id="dietType" required>
+          <option value="vegetarian">Vegetarian</option>
+          <option value="vegan">Vegan</option>
+          <option value="keto">Keto</option>
+          <option value="regular">Regular</option>
+        </select>
+      </div>
+
+      <div class="input-group"><label>Allergies</label></div>
+      <div class="form-row">
+        <label for="nuts">Nuts</label>
+        <input type="checkbox" id="nuts" name="allergies" value="nuts">
+      </div>
+      <div class="form-row">
+        <label for="dairy">Dairy</label>
+        <input type="checkbox" id="dairy" name="allergies" value="dairy">
+      </div>
+      <div class="form-row">
+        <label for="gluten">Gluten</label>
+        <input type="checkbox" id="gluten" name="allergies" value="gluten">
+      </div>
+
+      <div class="input-group"><label>Preferred Cuisines</label></div>
+      <div class="form-row">
+        <label for="italian">Italian</label>
+        <input type="checkbox" id="italian" name="cuisines" value="italian">
+      </div>
+      <div class="form-row">
+        <label for="indian">Indian</label>
+        <input type="checkbox" id="indian" name="cuisines" value="indian">
+      </div>
+      <div class="form-row">
+        <label for="chinese">Chinese</label>
+        <input type="checkbox" id="chinese" name="cuisines" value="chinese">
+      </div>
+      <div class="form-row">
+        <label for="mexican">Mexican</label>
+        <input type="checkbox" id="mexican" name="cuisines" value="mexican">
+      </div>
+
+      <button class="btn" type="submit">Save Preferences</button>
+    </form>
+    <div id="result"></div>
+  </div>
+  <script type="module" src="customise.js"></script>
+</body>
+</html>

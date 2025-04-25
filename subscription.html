@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Subscription Customisation | FoodGenie</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="dashboard-wrapper">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+      <h2>FoodGenie</h2>
+      <div class="user-info">
+        <p id="user-email">Loading...</p>
+      </div>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="customise.html">Meal Customisation</a>
+      <a href="subscription.html" class="active">Subscription</a>
+      <a href="feedback.html">Feedback</a>
+      <a href="account.html">Account</a>
+      <a href="#" id="logout-btn">Logout</a>
+    </div>
+
+    <div class="dashboard-content">
+      <div class="container" style="max-width: 430px; margin: 40px auto;">
+        <div class="wizard-progress" id="wizard-progress"></div>
+
+        <!-- Step 1: Goal -->
+        <div class="wizard-step" id="step-0">
+          <h2 class="subtitle" style="margin-bottom: 20px;">What's your primary goal?</h2>
+          <div class="input-group">
+            <button class="btn wizard-btn" data-value="lose-weight">Lose Weight</button>
+            <button class="btn wizard-btn" data-value="healthy-eating">Healthy Eating</button>
+            <button class="btn wizard-btn" data-value="gain-weight">Gain Weight</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Gender -->
+        <div class="wizard-step" id="step-1">
+          <h2 class="subtitle" style="margin-bottom: 20px;">Your Gender?</h2>
+          <div class="input-group" style="display: flex; gap: 24px; justify-content: center;">
+            <label><input type="radio" name="gender" value="male"> Male</label>
+            <label><input type="radio" name="gender" value="female"> Female</label>
+          </div>
+        </div>
+
+        <!-- Step 3: Age, Height, Weight -->
+        <div class="wizard-step" id="step-2">
+          <h2 class="subtitle" style="margin-bottom: 20px;">Tell us about you</h2>
+          <div class="input-group">
+            <input class="wizard-input input-group" type="number" id="age" placeholder="Age (years)" min="18" max="100">
+            <input class="wizard-input input-group" type="number" id="height" placeholder="Height (cm)" min="100" max="250">
+            <input class="wizard-input input-group" type="number" id="weight" placeholder="Weight (kg)" min="30" max="200">
+          </div>
+        </div>
+
+        <!-- Step 4: Diet Type -->
+        <div class="wizard-step" id="step-3">
+          <h2 class="subtitle" style="margin-bottom: 20px;">Your Dietary Preference?</h2>
+          <div class="input-group">
+            <button class="btn wizard-btn" data-value="vegetarian">Vegetarian</button>
+            <button class="btn wizard-btn" data-value="vegan">Vegan</button>
+            <button class="btn wizard-btn" data-value="keto">Keto</button>
+            <button class="btn wizard-btn" data-value="regular">Regular</button>
+          </div>
+        </div>
+
+        <!-- Step 5: Meals per day & Days -->
+        <div class="wizard-step" id="step-4">
+          <h2 class="subtitle" style="margin-bottom: 20px;">Meals & Duration</h2>
+          <div class="input-group">
+            <label for="meals-per-day">Meals per day</label>
+            <input class="wizard-input" type="number" id="meals-per-day" min="1" max="6" value="3">
+          </div>
+          <div class="input-group">
+            <label for="subscription-days">Number of days</label>
+            <input class="wizard-input" type="number" id="subscription-days" min="1" max="30" value="7">
+          </div>
+        </div>
+
+        <!-- Step 6: Allergies/Notes -->
+        <div class="wizard-step" id="step-5">
+          <h2 class="subtitle" style="margin-bottom: 20px;">Allergies or Special Notes?</h2>
+          <div class="input-group">
+            <input class="wizard-input" type="text" id="allergies" placeholder="e.g., gluten, nuts">
+            <textarea class="wizard-input" id="notes" placeholder="Medical conditions, preferences, etc." rows="2"></textarea>
+          </div>
+        </div>
+
+        <!-- Step 7: Review -->
+        <div class="wizard-step" id="step-6">
+          <h2 class="subtitle" style="margin-bottom: 20px;">Review & Confirm</h2>
+          <div class="content-box" id="wizard-summary" style="font-size: 15px; color: #5C4B51;"></div>
+          <button class="btn" id="confirm-btn">Confirm & Save</button>
+        </div>
+
+        <div style="margin-top: 18px;">
+          <button class="btn" id="back-btn" style="width: 110px;">Back</button>
+          <button class="btn" id="next-btn" style="width: 110px;">Next</button>
+        </div>
+        <div id="wizard-result" style="margin-top:16px;color:#FF8097;font-weight:600;"></div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="subscription.js"></script>
+</body>
+</html>

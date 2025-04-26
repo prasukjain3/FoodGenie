@@ -1,4 +1,3 @@
-/* Google Font */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap');
 
 * {
@@ -9,118 +8,10 @@
 }
 
 body {
-  background-color: #FFFAF1; /* Soft Cream */
+  background-color: #FFFAF1;
   min-height: 100vh;
 }
 
-/* Container for Login, Register, Customisation */
-.container {
-  background: #FFF5E1; /* Light Peach */
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
-  text-align: center;
-  width: 350px;
-  margin: 40px auto;
-}
-
-h1 {
-  font-size: 28px;
-  color: #FF9671; /* Pastel Orange */
-  margin-bottom: 10px;
-  font-weight: 700;
-}
-
-.subtitle {
-  font-size: 15px;
-  color: #776B5D;
-  margin-bottom: 20px;
-}
-
-.input-group {
-  text-align: left;
-  margin-bottom: 18px;
-}
-
-.input-group label {
-  font-size: 15px;
-  color: #5C4B51;
-  margin-bottom: 4px;
-  display: block;
-}
-
-.input-group input,
-.input-group select {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #EEC7A7; /* Soft Pink Border */
-  border-radius: 8px;
-  font-size: 15px;
-  background-color: #FFF8E3; /* Light Yellow */
-}
-
-.input-group input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: #FFADAD;
-  margin-right: 8px;
-}
-
-.form-row {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.form-row label {
-  width: 140px;
-  font-size: 15px;
-  color: #5C4B51;
-  margin-right: 10px;
-}
-
-.form-row input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: #FFADAD;
-}
-
-.btn {
-  width: 100%;
-  padding: 12px;
-  background-color: #FFADAD; /* Soft Pink */
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-  margin-top: 18px;
-  font-weight: 600;
-}
-
-.btn:hover {
-  background-color: #FF8097; /* Slightly Darker Pink */
-}
-
-.login-link {
-  margin-top: 15px;
-  font-size: 14px;
-  color: #776B5D;
-}
-
-.login-link a {
-  color: #FF9671; /* Pastel Orange */
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.login-link a:hover {
-  text-decoration: underline;
-}
-
-/* Dashboard Layout */
 .dashboard-wrapper {
   display: flex;
   width: 100vw;
@@ -130,15 +21,19 @@ h1 {
 /* Sidebar Navigation */
 .sidebar {
   width: 250px;
-  background: #FFADAD; /* Soft Pink */
+  background: #FFADAD;
   color: white;
   padding: 28px 18px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   min-height: 100vh;
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+  z-index: 2000;
 }
-
+.sidebar.collapsed {
+  transform: translateX(-110%);
+}
 .sidebar h2 {
   font-size: 24px;
   margin-bottom: 22px;
@@ -147,9 +42,8 @@ h1 {
   font-weight: 700;
   width: 100%;
 }
-
 .user-info {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255,255,255,0.15);
   padding: 12px 10px;
   border-radius: 6px;
   margin-bottom: 24px;
@@ -159,7 +53,6 @@ h1 {
   color: #fff;
   word-break: break-all;
 }
-
 .sidebar a {
   text-decoration: none;
   color: white;
@@ -172,11 +65,9 @@ h1 {
   font-size: 16px;
   font-weight: 500;
 }
-
 .sidebar a:hover, .sidebar a.active {
-  background: #FF8097; /* Slightly Darker Pink */
+  background: #FF8097;
 }
-
 #logout-btn {
   margin-top: auto;
   background: #fff;
@@ -195,17 +86,33 @@ h1 {
   color: #fff;
 }
 
-/* Dashboard Main Content */
+/* Hamburger Menu */
+.hamburger {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  background: #FFADAD;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 24px;
+  padding: 8px 12px;
+  cursor: pointer;
+  display: none;
+}
+
+/* Main Content */
 .dashboard-content {
   flex: 1;
   padding: 32px 40px;
-  background-color: #FFFAF1; /* Matches body background */
+  background-color: #FFFAF1;
   min-height: 100vh;
   overflow-y: auto;
 }
 
 .header {
-  background: #FFF5E1; /* Matches container background */
+  background: #FFF5E1;
   padding: 18px 22px;
   border-radius: 10px;
   margin-bottom: 28px;
@@ -213,13 +120,11 @@ h1 {
   justify-content: space-between;
   align-items: center;
 }
-
 .header h2 {
   font-size: 22px;
   color: #FF9671;
   font-weight: 700;
 }
-
 .header p {
   font-size: 16px;
   color: #5C4B51;
@@ -233,25 +138,47 @@ h1 {
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   text-align: left;
 }
-
 .content-box h3 {
   color: #FF9671;
   font-size: 19px;
   margin-bottom: 10px;
 }
-
-.content-box p,
-.content-box h4 {
+.content-box p, .content-box h4 {
   color: #5C4B51;
   font-size: 15px;
   margin-bottom: 7px;
 }
-
 .meal-box {
   background: #FFEBCC;
   padding: 15px 18px;
   border-radius: 7px;
   margin-top: 12px;
+  margin-bottom: 16px;
+}
+.content-box .btn {
+  width: auto;
+  display: inline-block;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 14px;
+  min-width: 140px;
+}
+
+#subscription-price {
+  color: #FF9671;
+  font-size: 20px;
+  font-weight: 700;
+}
+#subscription-delivery {
+  color: #5C4B51;
+  font-weight: 600;
+}
+.subscription-plan-badge {
+  background: #FFADAD;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
 .footer {
@@ -262,50 +189,76 @@ h1 {
   opacity: 0.8;
 }
 
-/* Feedback / Account / Customisation Page Consistency */
-textarea {
+/* Forms */
+.container {
+  background: #FFF5E1;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+  text-align: center;
+  width: 350px;
+  margin: 40px auto;
+}
+.input-group {
+  text-align: left;
+  margin-bottom: 18px;
+}
+.input-group label {
+  font-size: 15px;
+  color: #5C4B51;
+  margin-bottom: 4px;
+  display: block;
+}
+input, select, textarea {
   width: 100%;
   padding: 10px;
-  margin-top: 5px;
   border: 1px solid #EEC7A7;
   border-radius: 8px;
   font-size: 15px;
   background-color: #FFF8E3;
-  resize: vertical;
 }
-
-select {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #EEC7A7;
-  border-radius: 8px;
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #FFADAD;
+  margin-right: 8px;
+}
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.form-row label {
+  width: 140px;
   font-size: 15px;
-  background-color: #FFF8E3;
+  color: #5C4B51;
+  margin-right: 10px;
 }
 
-/* Responsive */
-@media (max-width: 900px) {
-  .dashboard-wrapper {
-    flex-direction: column;
-  }
-  .sidebar {
-    width: 100%;
-    flex-direction: row;
-    align-items: stretch;
-    min-height: unset;
-    padding: 18px 6px;
-    justify-content: space-between;
-  }
-  .dashboard-content {
-    padding: 18px 8px;
-  }
+/* Buttons */
+.btn, .wizard-btn {
+  background-color: #FFADAD;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  min-width: 140px;
+  width: 100%;
+  display: block;
+  margin-top: 18px;
 }
-/* Wizard step transitions */
+.btn:hover, .wizard-btn:hover, .wizard-btn.selected, .wizard-btn:focus {
+  background-color: #FF8097;
+  outline: none;
+}
+
+/* Wizard Stepper (Subscription) */
 .wizard-step { display: none; }
 .wizard-step.active { display: block; }
-
-/* Progress bar for wizard */
 .wizard-progress {
   margin-bottom: 20px;
   color: #FF9671;
@@ -314,33 +267,17 @@ select {
   text-align: center;
 }
 
-/* Wizard input tweaks for consistency */
-.wizard-input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #EEC7A7;
-  background: #FFF8E3;
-  margin-bottom: 12px;
-  font-size: 15px;
-}
-
-/* Highlight selected wizard button */
-.wizard-btn.selected, .wizard-btn:focus {
-  background: #FF8097;
-  outline: none;
-}
-.wizard-btn {
-  background: #FFADAD;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-}
-.wizard-btn:hover {
-  background: #FF8097;
+/* Responsive Design & Collapsible Sidebar */
+@media (max-width: 900px) {
+  .hamburger { display: block; }
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    transform: translateX(-100%);
+  }
+  .sidebar.collapsed { transform: translateX(0); }
+  .dashboard-content { padding: 20px; }
+  .container { margin: 80px 20px; width: auto; }
 }

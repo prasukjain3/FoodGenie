@@ -15,29 +15,61 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-function getNextDeliveryDate() {
-  const date = new Date();
-  date.setDate(date.getDate() + 7);
-  return date.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' });
+function getNextDeliveryDate(timestamp, days) {
+  if (!timestamp || !days) return "-";
+  const date = new Date(timestamp.toDate ? timestamp.toDate() : timestamp);
+  date.setDate(date.getDate() + days);
+  return date.toLocaleDateString("en-US", {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
 }
 
-function getMealDetails(dietType) {
+function getMealDetails(dietType, mealsPerDay = 3) {
   const mealDetails = {
-    'vegetarian': { calories: '450 kcal', macros: 'Protein 18g | Carbs 55g | Fats 15g' },
-    'vegan': { calories: '430 kcal', macros: 'Protein 15g | Carbs 60g | Fats 13g' },
-    'keto': { calories: '480 kcal', macros: 'Protein 25g | Carbs 10g | Fats 35g' },
-    'regular': { calories: '500 kcal', macros: 'Protein 22g | Carbs 50g | Fats 18g' }
+    'vegetarian': {
+      name: 'Vegetarian Balanced Meal',
+      calories: 450,
+      macros: 'Protein 18g | Carbs 55g | Fats 15g'
+    },
+    'vegan': {
+      name: 'Plant-Powered Meal',
+      calories: 430,
+      macros: 'Protein 15g | Carbs 60g | Fats 13g'
+    },
+    'keto': {
+      name: 'Keto Fuel Meal',
+      calories: 480,
+      macros: 'Protein 25g | Carbs 10g | Fats 35g'
+    },
+    'regular': {
+      name: 'Classic Balanced Meal',
+      calories: 500,
+      macros: 'Protein 22g | Carbs 50g | Fats 18g'
+    }
   };
-  return mealDetails[dietType] || { calories: '450 kcal', macros: 'Protein 20g | Carbs 50g | Fats 15g' };
-}
-
-function getDisplayName(email) {
-  if (!email) return 'User';
-  return email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1);
+  const meal = mealDetails[dietType?.toLowerCase()] || mealDetails.regular;
+  return {
+    name: `${mealsPerDay}x ${meal.name}`,
+    calories: `${meal.calories * mealsPerDay} kcal`,
+    macros: meal.macros
+  };
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // LOGOUT FUNCTIONALITY
+  // Hamburger/collapsible sidebar logic
+  const sidebar = document.getElementById('sidebar');
+  const hamburger = document.getElementById('hamburger-btn');
+  const closeSidebar = document.getElementById('close-sidebar');
+  hamburger.onclick = () => sidebar.classList.add('collapsed');
+  closeSidebar.onclick = () => sidebar.classList.remove('collapsed');
+  document.querySelectorAll('.sidebar a').forEach(link => {
+    link.onclick = () => sidebar.classList.remove('collapsed');
+  });
+
+  // Logout
   const logoutBtn = document.getElementById('logout-btn');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', async (e) => {
@@ -51,43 +83,66 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // DASHBOARD DATA
   onAuthStateChanged(auth, async (user) => {
     if (!user) {
       window.location.href = "login.html";
       return;
     }
-
     document.getElementById('user-email').textContent = user.email;
-    document.getElementById('user-display-name').textContent = getDisplayName(user.email);
-    document.getElementById('next-delivery').textContent = getNextDeliveryDate();
+    document.getElementById('user-display-name').textContent =
+      user.email.split('@')[0].charAt(0).toUpperCase() + user.email.split('@')[0].slice(1);
 
     try {
       const prefDoc = await getDoc(doc(db, "users", user.uid, "mealPreferences", "latest"));
+      const subDoc = await getDoc(doc(db, "users", user.uid, "subscription", "latest"));
+
+      let dietType = "regular";
+      let mealsPerDay = 3;
+      let allergies = "None";
+      let cuisines = "No preferences";
+      let plan = "Standard Plan";
+      let price = "₹0";
+      let duration = "7 days";
+      let delivery = "-";
+      let mealName = "Loading...";
+      let calories = "Loading...";
+      let macros = "Loading...";
+
       if (prefDoc.exists()) {
-        const pref = prefDoc.data();
-        document.getElementById('plan-type').textContent = pref.dietType ? pref.dietType.charAt(0).toUpperCase() + pref.dietType.slice(1) : 'Standard';
-        document.getElementById('diet-type').textContent = pref.dietType || 'Not set';
-        document.getElementById('allergies').textContent = (pref.allergies && pref.allergies.length > 0) ? pref.allergies.join(', ') : 'None';
-        document.getElementById('preferred-cuisines').textContent = (pref.preferredCuisines && pref.preferredCuisines.length > 0) ? pref.preferredCuisines.join(', ') : 'No preferences set';
-        document.getElementById('subscription-status').textContent = 'Active';
-        const cuisine = (pref.preferredCuisines && pref.preferredCuisines.length > 0) ? pref.preferredCuisines[0] : '';
-        document.getElementById('meal-name').textContent = cuisine ? `${cuisine.charAt(0).toUpperCase() + cuisine.slice(1)} ${pref.dietType} Bowl` : `${pref.dietType ? pref.dietType.charAt(0).toUpperCase() + pref.dietType.slice(1) : 'Standard'} Meal`;
-        const mealDetails = getMealDetails(pref.dietType);
-        document.getElementById('calories').textContent = mealDetails.calories;
-        document.getElementById('macros').textContent = mealDetails.macros;
-      } else {
-        document.getElementById('plan-type').textContent = 'Standard';
-        document.getElementById('diet-type').textContent = 'Not set';
-        document.getElementById('allergies').textContent = 'None';
-        document.getElementById('preferred-cuisines').textContent = 'No preferences set';
-        document.getElementById('subscription-status').textContent = 'Inactive';
-        document.getElementById('meal-name').textContent = 'Standard Meal';
-        document.getElementById('calories').textContent = '450 kcal';
-        document.getElementById('macros').textContent = 'Protein 20g | Carbs 50g | Fats 15g';
+        const prefData = prefDoc.data();
+        dietType = prefData.dietType || dietType;
+        allergies = prefData.allergies?.join(', ') || allergies;
+        cuisines = prefData.preferredCuisines?.join(', ') || cuisines;
       }
+
+      if (subDoc.exists()) {
+        const subData = subDoc.data();
+        plan = subData.goal ? `${subData.goal.replace(/-/g, ' ')} Plan` : plan;
+        price = `₹${subData.price?.toLocaleString("en-IN") || '0'}`;
+        mealsPerDay = subData.mealsPerDay || mealsPerDay;
+        duration = `${subData.subscriptionDays || 7} days`;
+        delivery = getNextDeliveryDate(subData.timestamp, subData.subscriptionDays);
+      }
+
+      const mealInfo = getMealDetails(dietType, mealsPerDay);
+      mealName = mealInfo.name;
+      calories = mealInfo.calories;
+      macros = mealInfo.macros;
+
+      document.getElementById('subscription-plan').textContent = plan;
+      document.getElementById('diet-type').textContent = dietType;
+      document.getElementById('allergies').textContent = allergies;
+      document.getElementById('preferred-cuisines').textContent = cuisines;
+      document.getElementById('meal-name').textContent = mealName;
+      document.getElementById('calories').textContent = calories;
+      document.getElementById('macros').textContent = macros;
+      document.getElementById('subscription-delivery').textContent = delivery;
+      document.getElementById('subscription-meals').textContent = mealsPerDay;
+      document.getElementById('subscription-duration').textContent = duration;
+      document.getElementById('subscription-price').textContent = price;
+
     } catch (error) {
-      alert("Error fetching preferences: " + error.message);
+      console.error("Error loading data:", error);
     }
   });
 });

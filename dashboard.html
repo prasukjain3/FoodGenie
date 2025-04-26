@@ -7,51 +7,67 @@
 </head>
 <body>
   <div class="dashboard-wrapper">
+    <!-- Hamburger Button -->
+    <button class="hamburger" id="hamburger-btn" aria-label="Open Menu">&#9776;</button>
     <!-- Sidebar Navigation -->
-    <div class="sidebar">
+    <nav class="sidebar" id="sidebar">
+      <a href="javascript:void(0)" class="closebtn" id="close-sidebar" aria-label="Close Menu">&times;</a>
       <h2>FoodGenie</h2>
       <div class="user-info">
         <p id="user-email">Loading...</p>
       </div>
       <a href="dashboard.html" class="active">Dashboard</a>
       <a href="customise.html">Meal Customisation</a>
+      <a href="subscription.html">Subscription</a>
       <a href="feedback.html">Feedback</a>
       <a href="account.html">Account</a>
       <a href="#" id="logout-btn">Logout</a>
-    </div>
-
-    <!-- Main Content Area -->
+    </nav>
     <div class="dashboard-content">
       <div class="header">
         <h2>Your Meal Dashboard</h2>
         <p>Welcome, <span id="user-display-name">User</span>!</p>
       </div>
-
       <div class="content-box">
-        <h3>Current Meal Plan</h3>
-        <p>Next Meal Delivery: <span id="next-delivery">Loading...</span></p>
-        <p>Plan: <span id="plan-type">Loading...</span></p>
-        <p>Subscription Status: <span id="subscription-status">Loading...</span></p>
-        <div class="meal-box">
+        <h3>Current Meal Plan & Subscription</h3>
+        <p>
+          <b>Plan:</b> <span id="subscription-plan">Loading...</span><br>
+          <b>Diet Type:</b> <span id="diet-type">Loading...</span><br>
+          <b>Allergies:</b> <span id="allergies">Loading...</span><br>
+          <b>Preferred Cuisines:</b> <span id="preferred-cuisines">Loading...</span>
+        </p>
+        <div class="meal-box" style="margin-bottom: 16px;">
           <h4>Meal: <span id="meal-name">Loading...</span></h4>
           <p>Calories: <span id="calories">Loading...</span></p>
           <p>Macros: <span id="macros">Loading...</span></p>
         </div>
+        <p>
+          <b>Next Meal Delivery:</b> <span id="subscription-delivery">Loading...</span><br>
+          <b>Meals/Day:</b> <span id="subscription-meals">Loading...</span><br>
+          <b>Duration:</b> <span id="subscription-duration">Loading...</span><br>
+          <b>Price:</b> <span id="subscription-price">₹0</span>
+        </p>
+        <div style="display: flex; gap: 10px; margin-top: 18px;">
+          <a href="customise.html" class="btn" style="min-width:140px;">Update Preferences</a>
+          <a href="subscription.html" class="btn" style="min-width:140px;">Manage Subscription</a>
+        </div>
       </div>
-
-      <div class="content-box">
-        <h3>Your Preferences</h3>
-        <p>Diet Type: <span id="diet-type">Loading...</span></p>
-        <p>Allergies: <span id="allergies">Loading...</span></p>
-        <p>Preferred Cuisines: <span id="preferred-cuisines">Loading...</span></p>
-        <a href="customise.html" class="btn">Update Preferences</a>
-      </div>
-
       <footer class="footer">
         © 2025 FoodGenie | All Rights Reserved
       </footer>
     </div>
   </div>
+  <script>
+    // Hamburger/collapsible sidebar logic
+    const sidebar = document.getElementById('sidebar');
+    const hamburger = document.getElementById('hamburger-btn');
+    const closeSidebar = document.getElementById('close-sidebar');
+    hamburger.onclick = () => sidebar.classList.add('collapsed');
+    closeSidebar.onclick = () => sidebar.classList.remove('collapsed');
+    document.querySelectorAll('.sidebar a').forEach(link => {
+      link.onclick = () => sidebar.classList.remove('collapsed');
+    });
+  </script>
   <script type="module" src="dashboard.js"></script>
 </body>
 </html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feedback | FoodGenie</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="dashboard-wrapper">
+    <!-- Hamburger Button -->
+    <button class="hamburger" id="hamburger-btn" aria-label="Open Menu">&#9776;</button>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+      <a href="javascript:void(0)" class="closebtn" id="close-sidebar" aria-label="Close Menu">&times;</a>
+      <h2>FoodGenie</h2>
+      <div class="user-info">
+        <p id="user-email">Loading...</p>
+      </div>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="customise.html">Meal Customisation</a>
+      <a href="subscription.html">Subscription</a>
+      <a href="feedback.html" class="active">Feedback</a>
+      <a href="account.html">Account</a>
+      <a href="#" id="logout-btn">Logout</a>
+    </nav>
+
+    <div class="dashboard-content">
+      <div class="header">
+        <h2>Provide Feedback</h2>
+        <p>Welcome, <span id="user-display-name">User</span>!</p>
+      </div>
+      <div class="content-box">
+        <form id="feedback-form">
+          <div class="input-group">
+            <label for="feedback-type">Type of Feedback</label>
+            <select id="feedback-type" required>
+              <option value="">Select your feedback type</option>
+              <option value="meal">Meal Quality</option>
+              <option value="delivery">Delivery</option>
+              <option value="app">App Experience</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="feedback-message">Your Feedback</label>
+            <textarea id="feedback-message" rows="5" required placeholder="Tell us what's on your mind..."></textarea>
+          </div>
+          <button class="btn" type="submit">Submit Feedback</button>
+        </form>
+        <div id="feedback-result"></div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="feedback.js"></script>
+  <script>
+    // Hamburger/collapsible sidebar logic
+    const sidebar = document.getElementById('sidebar');
+    const hamburger = document.getElementById('hamburger-btn');
+    const closeSidebar = document.getElementById('close-sidebar');
+    hamburger?.addEventListener('click', () => sidebar.classList.toggle('collapsed'));
+    closeSidebar?.addEventListener('click', () => sidebar.classList.remove('collapsed'));
+    document.querySelectorAll('.sidebar a').forEach(link => {
+      link.addEventListener('click', () => sidebar.classList.remove('collapsed'));
+    });
+  </script>
+</body>
+</html>

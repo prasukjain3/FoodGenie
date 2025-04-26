@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Account | FoodGenie</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="dashboard-wrapper">
+    <!-- Hamburger Button -->
+    <button class="hamburger" id="hamburger-btn" aria-label="Open Menu">&#9776;</button>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+      <a href="javascript:void(0)" class="closebtn" id="close-sidebar" aria-label="Close Menu">&times;</a>
+      <h2>FoodGenie</h2>
+      <div class="user-info">
+        <p id="user-email">Loading...</p>
+      </div>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="customise.html">Meal Customisation</a>
+      <a href="subscription.html">Subscription</a>
+      <a href="feedback.html">Feedback</a>
+      <a href="account.html" class="active">Account</a>
+      <a href="#" id="logout-btn">Logout</a>
+    </nav>
+
+    <div class="dashboard-content">
+      <div class="header">
+        <h2>Account Settings</h2>
+        <p>Welcome, <span id="user-display-name">User</span>!</p>
+      </div>
+      <div class="content-box">
+        <form id="account-form">
+          <div class="input-group">
+            <label for="account-email">Email</label>
+            <input id="account-email" type="email" readonly>
+          </div>
+          <div class="input-group">
+            <label for="display-name">Display Name</label>
+            <input id="display-name" type="text" placeholder="Your name">
+          </div>
+          <button class="btn" type="submit">Update Profile</button>
+        </form>
+        <div id="account-result"></div>
+      </div>
+      <div class="content-box">
+        <h3>Password Management</h3>
+        <button class="btn" id="reset-password">Send Password Reset Email</button>
+        <div id="reset-result"></div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="account.js"></script>
+  <script>
+    // Hamburger/collapsible sidebar logic
+    const sidebar = document.getElementById('sidebar');
+    const hamburger = document.getElementById('hamburger-btn');
+    const closeSidebar = document.getElementById('close-sidebar');
+    hamburger?.addEventListener('click', () => sidebar.classList.toggle('collapsed'));
+    closeSidebar?.addEventListener('click', () => sidebar.classList.remove('collapsed'));
+    document.querySelectorAll('.sidebar a').forEach(link => {
+      link.addEventListener('click', () => sidebar.classList.remove('collapsed'));
+    });
+  </script>
+</body>
+</html>

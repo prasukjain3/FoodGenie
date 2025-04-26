@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB1jZkKqt637U1FdXMjazlBgGaQ_ByT8yQ",
@@ -10,47 +10,34 @@ const firebaseConfig = {
   messagingSenderId: "775633814963",
   appId: "1:775633814963:web:eb6e5b4d0e2dac9923f7c6"
 };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const steps = [
-  // 0: Goal
-  { key: "goal", type: "button", required: true },
-  // 1: Gender
-  { key: "gender", type: "radio", required: true },
-  // 2: Age/Height/Weight
-  { key: "age", type: "number", required: true },
-  { key: "height", type: "number", required: true },
-  { key: "weight", type: "number", required: true },
-  // 3: Diet Type
-  { key: "dietType", type: "button", required: true },
-  // 4: Meals/Days
-  { key: "mealsPerDay", type: "number", required: true },
-  { key: "subscriptionDays", type: "number", required: true },
-  // 5: Allergies/Notes
-  { key: "allergies", type: "text", required: false },
-  { key: "notes", type: "text", required: false }
-];
-
 let wizardStep = 0;
 let wizardData = {};
 
+function getPerMealPrice(mealsPerDay, days, dietType) {
+  let base = 232;
+  if (days >= 14) base = 188;
+  else if (days >= 4) base = 209;
+  if (['keto', 'vegan', 'high-protein'].includes((dietType || '').toLowerCase())) {
+    base = Math.round(base * 1.1);
+  }
+  return base;
+}
+function calcTotalPrice(mealsPerDay, days, dietType) {
+  const perMeal = getPerMealPrice(mealsPerDay, days, dietType);
+  return perMeal * mealsPerDay * days;
+}
 function showStep(step) {
-  // Hide all steps
   for (let i = 0; i <= 6; i++) {
     document.getElementById(`step-${i}`).classList.remove('active');
   }
   document.getElementById(`step-${step}`).classList.add('active');
   document.getElementById('wizard-progress').textContent = `Step ${step + 1} of 7`;
-
-  // Back button
   document.getElementById('back-btn').disabled = (step === 0);
-  // Next button
   document.getElementById('next-btn').style.display = (step === 6) ? 'none' : 'inline-block';
-
-  // Pre-fill values for steps 2, 4, 5
   if (step === 2) {
     document.getElementById('age').value = wizardData.age || '';
     document.getElementById('height').value = wizardData.height || '';
@@ -65,7 +52,6 @@ function showStep(step) {
     document.getElementById('notes').value = wizardData.notes || '';
   }
   if (step === 6) {
-    // Review step
     let summary = `
       <b>Goal:</b> ${prettyGoal(wizardData.goal)}<br>
       <b>Gender:</b> ${wizardData.gender}<br>
@@ -79,9 +65,14 @@ function showStep(step) {
       <b>Notes:</b> ${wizardData.notes || 'None'}
     `;
     document.getElementById('wizard-summary').innerHTML = summary;
+    const price = calcTotalPrice(
+      wizardData.mealsPerDay || 3,
+      wizardData.subscriptionDays || 7,
+      wizardData.dietType
+    );
+    document.getElementById('wizard-price').textContent = "₹" + price.toLocaleString("en-IN");
   }
 }
-
 function prettyGoal(goal) {
   return ({
     "lose-weight": "Lose Weight",
@@ -92,13 +83,9 @@ function prettyGoal(goal) {
 function prettyDiet(diet) {
   return diet ? diet.charAt(0).toUpperCase() + diet.slice(1) : diet;
 }
-
 function validateStep(step) {
-  // Step 0: Goal
   if (step === 0 && !wizardData.goal) return false;
-  // Step 1: Gender
   if (step === 1 && !wizardData.gender) return false;
-  // Step 2: Age, Height, Weight
   if (step === 2) {
     const age = document.getElementById('age').value;
     const height = document.getElementById('height').value;
@@ -108,9 +95,7 @@ function validateStep(step) {
     wizardData.height = parseInt(height);
     wizardData.weight = parseInt(weight);
   }
-  // Step 3: Diet Type
   if (step === 3 && !wizardData.dietType) return false;
-  // Step 4: Meals/Days
   if (step === 4) {
     const meals = document.getElementById('meals-per-day').value;
     const days = document.getElementById('subscription-days').value;
@@ -118,16 +103,13 @@ function validateStep(step) {
     wizardData.mealsPerDay = parseInt(meals);
     wizardData.subscriptionDays = parseInt(days);
   }
-  // Step 5: Allergies/Notes
   if (step === 5) {
     wizardData.allergies = document.getElementById('allergies').value;
     wizardData.notes = document.getElementById('notes').value;
   }
   return true;
 }
-
 function handleWizardBtns() {
-  // Step 0: Goal
   document.querySelectorAll('#step-0 .wizard-btn').forEach(btn => {
     btn.onclick = () => {
       wizardData.goal = btn.dataset.value;
@@ -135,7 +117,6 @@ function handleWizardBtns() {
       btn.classList.add('selected');
     };
   });
-  // Step 3: Diet Type
   document.querySelectorAll('#step-3 .wizard-btn').forEach(btn => {
     btn.onclick = () => {
       wizardData.dietType = btn.dataset.value;
@@ -143,7 +124,6 @@ function handleWizardBtns() {
       btn.classList.add('selected');
     };
   });
-  // Step 1: Gender
   document.querySelectorAll('#step-1 input[name="gender"]').forEach(radio => {
     radio.onchange = () => {
       wizardData.gender = radio.value;
@@ -152,7 +132,16 @@ function handleWizardBtns() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Logout functionality
+  // Hamburger/collapsible sidebar logic
+  const sidebar = document.getElementById('sidebar');
+  const hamburger = document.getElementById('hamburger-btn');
+  const closeSidebar = document.getElementById('close-sidebar');
+  hamburger.onclick = () => sidebar.classList.add('collapsed');
+  closeSidebar.onclick = () => sidebar.classList.remove('collapsed');
+  document.querySelectorAll('.sidebar a').forEach(link => {
+    link.onclick = () => sidebar.classList.remove('collapsed');
+  });
+
   const logoutBtn = document.getElementById('logout-btn');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', async (e) => {
@@ -166,27 +155,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Auth and user info
   onAuthStateChanged(auth, async (user) => {
     if (!user) {
       window.location.href = 'login.html';
       return;
     }
     document.getElementById('user-email').textContent = user.email;
-    document.getElementById('user-display-name').textContent = getDisplayName(user.email);
-
-    // Pre-fill diet type if available from mealPreferences
     try {
-      const resp = await fetch(`https://firestore.googleapis.com/v1/projects/foodgenie-fg/databases/(default)/documents/users/${user.uid}/mealPreferences/latest`);
-      if (resp.ok) {
-        const data = await resp.json();
-        if (data.fields && data.fields.dietType) {
-          wizardData.dietType = data.fields.dietType.stringValue;
-        }
+      const prefDoc = await getDoc(doc(db, "users", user.uid, "mealPreferences", "latest"));
+      if (prefDoc.exists()) {
+        wizardData.dietType = prefDoc.data().dietType;
       }
     } catch (e) {}
 
-    // Start wizard
     handleWizardBtns();
     showStep(wizardStep);
 
@@ -203,13 +184,16 @@ document.addEventListener('DOMContentLoaded', () => {
       if (wizardStep > 0) wizardStep--;
       showStep(wizardStep);
     };
-
-    // Confirm & Save
     document.getElementById('confirm-btn').onclick = async () => {
       document.getElementById('wizard-result').textContent = "Saving...";
       try {
         await setDoc(doc(db, "users", user.uid, "subscription", "latest"), {
           ...wizardData,
+          price: calcTotalPrice(
+            wizardData.mealsPerDay || 3,
+            wizardData.subscriptionDays || 7,
+            wizardData.dietType
+          ),
           timestamp: new Date()
         });
         document.getElementById('wizard-result').textContent = "Subscription saved! Redirecting...";
@@ -220,8 +204,3 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   });
 });
-
-function getDisplayName(email) {
-  if (!email) return 'User';
-  return email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1);
-}

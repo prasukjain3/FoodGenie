@@ -99,13 +99,26 @@ Green, R., Milner, J., Joy, E.J.M., Agrawal, S., Dangour, A.D., 2016. Dietary pa
 
 ## Screenshots
 
-### Registration<img width="1280" alt="Register" src="https://github.com/user-attachments/assets/c1ea0590-0650-4189-be45-e4a6b120d1d5" />
+### Registration
+<img width="1280" alt="Register" src="https://github.com/user-attachments/assets/c1ea0590-0650-4189-be45-e4a6b120d1d5" />
 
-### Login<img width="1280" alt="Login" src="https://github.com/user-attachments/assets/709337aa-3aa2-4b55-a5cc-7f3b42a1e09a" />
+### Login
+<img width="1280" alt="Login" src="https://github.com/user-attachments/assets/709337aa-3aa2-4b55-a5cc-7f3b42a1e09a" />
 
-### Dashboard<img width="1280" alt="Dashboard" src="https://github.com/user-attachments/assets/c0cf01ab-4a21-4d66-9abc-1f5a29ecec53" />
+### Dashboard
+<img width="1280" alt="image" src="https://github.com/user-attachments/assets/5b274ed8-290b-4aea-a44d-8de4584736c4" />
 
-### Meal Customisation<img width="1280" alt="Customisation" src="https://github.com/user-attachments/assets/beca1025-cce9-4115-918a-f33262332245" />
+### Meal Customisation
+<img width="1280" alt="image" src="https://github.com/user-attachments/assets/c495e969-6218-491d-ab15-a6bd0359a9c2" />
+
+### Meal Subscription
+<img width="1280" alt="image" src="https://github.com/user-attachments/assets/dbd8a322-6a4b-4b0a-9af0-f3ba071e02fd" />
+
+### Feedback for Meal & Delivery
+<img width="1280" alt="image" src="https://github.com/user-attachments/assets/7fb24a75-cca5-40ef-a446-5ce72ca6e403" />
+
+### User Account
+<img width="1280" alt="image" src="https://github.com/user-attachments/assets/e94d98b5-af8c-48d2-991e-3f86ea3a4146" />
 
 
 
